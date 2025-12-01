@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
+from app.api.security import get_session_user_id
+from app.api.users import load_users, find_user
 from uvicorn import run
 
 # Routers
@@ -18,6 +20,18 @@ app.include_router(auth.router)
 app.include_router(consult.router)
 app.include_router(subscriptions.router)
 app.include_router(profile.router)
+
+
+@app.middleware("http")
+async def add_session_user(request, call_next):
+    uid = get_session_user_id(request)
+    request.state.uid = uid
+    request.state.user = None
+    if uid:
+        users = load_users()
+        request.state.user = find_user(users, uid)
+    response = await call_next(request)
+    return response
 
 
 @app.get("/healthz")
