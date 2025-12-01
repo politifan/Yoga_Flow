@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block page_styles %}
+<link rel="stylesheet" href="/static/css/subscriptions.css">
+{% endblock %}
+{% block content %}
+<section class="container">
+  <a href="/dashboard" class="btn btn-ghost btn-sm subscription-back">&larr; Назад к дашборду</a>
+  <div class="card subscription-detail" data-reveal>
+    <h1>{{ subscription.plan_name }}</h1>
+    <p class="muted">ID: {{ subscription.id }}</p>
+    <p class="price">{{ subscription.price_label or "—" }}</p>
+    <dl class="detail-list">
+      <div>
+        <dt>Статус</dt>
+        <dd>{{ subscription.status }}</dd>
+      </div>
+      <div>
+        <dt>Действует до</dt>
+        <dd>{{ subscription.ends_at_display or "—" }}</dd>
+      </div>
+    </dl>
+    <div class="sub-actions">
+      <a class="btn" href="{{ subscription.renew_url }}">Продлить</a>
+      {% if subscription.is_active %}
+        <a class="btn-ghost" href="{{ subscription.cancel_url }}">Отменить</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

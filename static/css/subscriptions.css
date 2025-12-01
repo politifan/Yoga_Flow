@@ -1,0 +1,59 @@
+.dashboard-panel{
+  background:#fff;
+  border-radius:28px;
+  padding:30px;
+  box-shadow: 0 25px 65px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.subscriptions-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap:18px;
+}
+.subscription-card{
+  cursor:pointer;
+  background:#f8f6f2;
+  border-radius:22px;
+  padding:18px;
+  border:1px solid rgba(0,0,0,.05);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.subscription-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.12);
+}
+.sub-head{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+.status-pill{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:13px;
+  text-transform:capitalize;
+  background: rgba(0,0,0,.08);
+  color:#1a1715;
+}
+.status-active{ background:#e5f7e9; color:#0f6b2b }
+.status-pending{ background:#fff4d6; color:#7b6000 }
+.status-cancelled, .status-expired{ background:#fde9ea; color:#8b1a1d }
+.status-expired{ opacity:.85 }
+.sub-actions{ display:flex; gap:10px; flex-wrap:wrap }
+.detail-list{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:12px;
+  padding:0;
+  margin:20px 0;
+  list-style:none;
+}
+.detail-list dt{ font-weight:600; margin-bottom:4px }
+.detail-list dd{ margin:0 }
+
+.subscription-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:16px;
+}
+.subscription-detail{ margin-top:12px; }

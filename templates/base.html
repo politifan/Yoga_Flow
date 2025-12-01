@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yoga on Telegram</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    {% block page_styles %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    {% include "partials/navbar.html" %}
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.html" %}
+    <script src="/static/js/animations.js" defer></script>
+    {% block scripts %}{% endblock %}
+  </body>
+  </html>

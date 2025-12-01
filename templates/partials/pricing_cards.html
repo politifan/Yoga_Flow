@@ -1,0 +1,19 @@
+<div class="grid3">
+  {% for p in plans %}
+  <div class="card">
+    <h3>{{ p.name }}</h3>
+    <p class="tagline">{{ p.tagline }}</p>
+    <p class="price">${{ p.price_usd }} <span>/ month</span></p>
+    <ul class="features">
+      {% for f in p.features %}
+        <li>{{ f }}</li>
+      {% endfor %}
+    </ul>
+    <form action="/subscribe" method="post">
+      <input type="hidden" name="plan_id" value="{{ p.id }}">
+      <button class="btn" type="submit">Choose Plan</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
