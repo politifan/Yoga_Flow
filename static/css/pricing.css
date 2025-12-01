@@ -1,0 +1,8 @@
+.pricing-page{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding:12px 0 24px;
+}
+.pricing-page h1{ margin:0 0 8px; }
+.pricing-page .grid3{ margin-top:8px; }

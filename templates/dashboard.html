@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock %}
+{% block content %}
+<section
+  class="container dashboard"
+  data-dashboard
+  data-uid="{{ user.id if user else '' }}"
+  data-subs='{{ subs | tojson | safe }}'
+  data-sub-toast="{{ request.query_params.get('sub') or '' }}"
+>
+  {% if user %}
+  <header class="dashboard-hero" data-reveal>
+    <div class="avatar-xl">
+      <button class="avatar-touch" type="button" data-avatar-trigger aria-label="Изменить аватар">
+        <div class="avatar-shell" aria-live="polite">
+          {% if user.avatar_url %}
+            <img src="{{ user.avatar_url }}" alt="Аватар {{ user.username }}" data-avatar-img>
+            <span class="avatar-letter" data-avatar-letter-text hidden>{{ user.avatar_letter }}</span>
+          {% else %}
+            <img src="" alt="" data-avatar-img hidden>
+            <span class="avatar-letter" data-avatar-letter-text>{{ user.avatar_letter }}</span>
+          {% endif %}
+        </div>
+      </button>
+      <button class="avatar-edit-chip" type="button" data-avatar-trigger aria-label="Изменить аватарку">изменить</button>
+    </div>
+    <div class="profile-hello">
+      <div class="greeting-row">
+        <div class="profile-menu" data-profile-menu>
+          <div class="profile-split">
+            <button
+              class="profile-name-toggle"
+              type="button"
+              data-profile-toggle
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span data-display-name>Привет, {{ user.username }}</span>
+            </button>
+            <button
+              class="profile-caret-btn"
+              type="button"
+              data-profile-toggle
+              aria-label="Открыть меню профиля"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="profile-caret" aria-hidden="true">›</span>
+            </button>
+          </div>
+          <div class="profile-dropdown hidden" data-profile-dropdown>
+            <form class="profile-form" data-username-form novalidate>
+              <label for="usernameField" class="muted small">Имя пользователя</label>
+              <div class="profile-input-row">
+                <input
+                  id="usernameField"
+                  name="username"
+                  class="input"
+                  type="text"
+                  minlength="3"
+                  maxlength="20"
+                  pattern="[A-Za-zА-Яа-яЁё0-9_-]{3,20}"
+                  value="{{ user.username }}"
+                  autocomplete="off"
+                  data-username-input
+                  required
+                >
+                <button class="btn btn-sm" type="submit">Сохранить</button>
+              </div>
+              <div class="flash ok hidden" data-username-flash aria-live="polite"></div>
+            </form>
+            <button class="profile-link" type="button" data-avatar-trigger>
+              Изменить аватарку
+            </button>
+            <div class="profile-info">
+              <p class="muted small">Email</p>
+              <span>{{ user.email }}</span>
+            </div>
+            <form action="/auth/logout" method="post">
+              <button class="profile-link danger" type="submit">Выйти</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% endif %}
+
+  <section class="dashboard-panel subscriptions" data-reveal>
+    <div class="section-heading">
+      <h2>Мои подписки</h2>
+      <p class="muted small">Актуальные планы в Telegram.</p>
+    </div>
+    <div class="flash err hidden" data-subs-flash aria-live="polite"></div>
+    <p class="muted" data-subs-empty>У вас нет активных подписок</p>
+    <div class="subscriptions-grid" data-subs-grid></div>
+  </section>
+</section>
+
+{% if user %}
+<div class="toast-stack" data-toast-stack></div>
+
+<div class="modal-backdrop hidden" data-avatar-modal-backdrop>
+  <div
+    class="modal-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="avatarModalTitle"
+    data-avatar-modal
+  >
+    <div class="modal-head">
+      <h3 id="avatarModalTitle">Изменить аватар</h3>
+      <button class="modal-close" type="button" data-avatar-modal-close aria-label="Закрыть">
+        ×
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="avatar-preview">
+        <div class="avatar-shell avatar-preview-shell">
+          {% if user.avatar_url %}
+            <img src="{{ user.avatar_url }}" alt="" data-avatar-preview-img>
+            <span data-avatar-preview-letter hidden>{{ user.avatar_letter }}</span>
+          {% else %}
+            <img src="" alt="" data-avatar-preview-img hidden>
+            <span data-avatar-preview-letter>{{ user.avatar_letter }}</span>
+          {% endif %}
+        </div>
+        <p class="muted small">PNG или JPG · до 5MB</p>
+      </div>
+      <div class="modal-controls">
+        <label for="avatarInput" class="btn btn-ghost btn-sm">Выбрать файл</label>
+        <input
+          id="avatarInput"
+          type="file"
+          accept="image/png,image/jpeg"
+          data-avatar-input
+          class="sr-only"
+        >
+        <div class="avatar-actions hidden" data-avatar-actions>
+          <button class="btn btn-sm" type="button" data-avatar-save>Сохранить</button>
+          <button class="btn-ghost btn-sm" type="button" data-avatar-cancel>Отмена</button>
+        </div>
+        <div class="flash err hidden" data-avatar-flash aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/dashboard.js" defer></script>
+{% endblock %}
