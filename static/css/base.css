@@ -18,7 +18,78 @@ body{
 .navbar{ position: sticky; top:0; backdrop-filter: blur(6px); background: rgba(244,237,228,.7); z-index:10; }
 .nav-inner{ display:flex; align-items:center; justify-content:space-between; }
 .logo{ font-weight: 800; color:#1a1715; text-decoration:none }
-.nav-links a{ color:#1a1715; text-decoration:none; margin-left:16px; font-weight:600 }
+.nav-links{ display:flex; align-items:center; gap:16px }
+.nav-links a,
+.nav-links button{
+  color:#1a1715;
+  text-decoration:none;
+  font-weight:600;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  padding:0;
+}
+.nav-links form{ margin:0 }
+.nav-profile{ position:relative; display:flex; align-items:center; }
+.avatar-btn{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background: linear-gradient(145deg, #2f2a26, #1f1a16);
+  color:#f7f4f0;
+  border:2px solid rgba(0,0,0,.12);
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  box-shadow: 0 6px 16px rgba(0,0,0,.2);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.avatar-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.2);
+  border-color: rgba(0,0,0,.2);
+}
+.avatar-btn:focus{ outline:2px solid var(--ink); outline-offset:3px; }
+.avatar-circle{ font-size: 20px;}
+.nav-dropdown{
+  position:absolute;
+  right:0;
+  top:120%;
+  min-width:160px;
+  background:#fff;
+  border-radius:14px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.16);
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  opacity:0;
+  transform: translateY(-6px) scale(0.98);
+  transition: opacity .18s ease, transform .18s ease;
+  z-index:20;
+}
+.nav-dropdown.open{
+  opacity:1;
+  transform: translateY(4px) scale(1);
+}
+.nav-dropdown a,
+.nav-dropdown button{
+  width:100%;
+  text-align:left;
+  padding:8px 10px;
+  border-radius:10px;
+  background: transparent;
+  border:none;
+  color:#1a1715;
+  font-weight:600;
+  cursor:pointer;
+}
+.nav-dropdown a:hover,
+.nav-dropdown button:hover{
+  background: rgba(0,0,0,.06);
+}
 
 .section-divider{ height:1px; background: var(--ink); opacity:.08; }
 
