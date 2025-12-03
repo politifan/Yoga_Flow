@@ -1,0 +1,75 @@
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="/">YogaFlow</a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      {% if request.state.uid %}
+        {% set email = request.state.user.email if request.state.user else "" %}
+        {% set letter = email.split("@")[0][:1] | upper if email else "Y" %}
+        <div class="nav-profile" data-nav-profile>
+          <button
+            type="button"
+            class="avatar-btn"
+            data-nav-trigger
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="Профиль"
+          >
+            <span class="avatar-circle">{{ letter }}</span>
+          </button>
+          <div class="nav-dropdown hidden" data-nav-dropdown>
+            <a href="/dashboard">Dashboard</a>
+            <form action="/auth/logout" method="post">
+              <button type="submit">Logout</button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <a href="/auth/login">Login</a>
+        <a href="/auth/register">Sign up</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const profile = document.querySelector('[data-nav-profile]');
+  if (!profile) return;
+  const trigger = profile.querySelector('[data-nav-trigger]');
+  const dropdown = profile.querySelector('[data-nav-dropdown]');
+
+  const close = () => {
+    dropdown?.classList.add('hidden');
+    dropdown?.classList.remove('open');
+    trigger?.setAttribute('aria-expanded', 'false');
+  };
+
+  const open = () => {
+    dropdown?.classList.remove('hidden');
+    requestAnimationFrame(() => dropdown?.classList.add('open'));
+    trigger?.setAttribute('aria-expanded', 'true');
+  };
+
+  trigger?.addEventListener('click', (evt) => {
+    evt.stopPropagation();
+    const isOpen = dropdown?.classList.contains('open');
+    if (isOpen) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  document.addEventListener('click', (evt) => {
+    if (!profile.contains(evt.target)) {
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') close();
+  });
+});
+</script>

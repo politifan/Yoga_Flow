@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block page_styles %}
+<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+{% block content %}
+
+<section class="hero container">
+  <div class="hero-text">
+    <h1>Breathe, Move, Grow — Yoga Made Simple on Telegram</h1>
+    <p class="sub">Join guided flows you can practice anywhere. Choose your path, follow along in Telegram, feel the difference in weeks.</p>
+    <div class="cta-row">
+      <a href="#consult" class="btn">Start Your Free Consultation</a>
+      <a href="/pricing" class="btn btn-ghost">See Plans</a>
+    </div>
+  </div>
+  <div class="hero-blob">
+    <div class="blob"></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="how container">
+  <h2>How it works</h2>
+  <div class="grid3">
+    <div class="card" data-reveal>
+      <h3>Pick Your Path</h3>
+      <p>Choose a plan that matches your level and schedule — or start undecided and we’ll guide you.</p>
+    </div>
+    <div class="card" data-reveal>
+      <h3>Practice in Telegram</h3>
+      <p>Receive bite-sized videos, voice cues, and reminders right inside Telegram. No extra apps.</p>
+    </div>
+    <div class="card" data-reveal>
+      <h3>Build Your Habit</h3>
+      <p>Track progress weekly, unlock new flows, and feel stronger, calmer, and more mobile.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="benefits container">
+  <h2>Why it works</h2>
+  <ul class="benefits-list">
+    <li>Short, effective sessions (10–30 min)</li>
+    <li>Certified instructors, safe progressions</li>
+    <li>Weekly check-ins & habit tips</li>
+    <li>Works on any device with Telegram</li>
+  </ul>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container plans-hub">
+  <div class="subscriptions" data-reveal>
+    <div class="section-heading">
+      <h2>Our subscriptions</h2>
+      <p class="muted">Pick a Telegram-based flow that fits your energy and schedule.</p>
+    </div>
+    {% include "partials/pricing_cards.html" %}
+  </div>
+
+  <div class="section-divider"></div>
+
+  {% if consult_ok %}
+    <div class="flash ok">Thanks! We’ll contact you within 24h.</div>
+  {% elif request.query_params.get('consult') == 'invalid' %}
+    <div class="flash err">Please check your email/phone and try again.</div>
+  {% endif %}
+
+  <div id="consult" class="consult-wrap" data-reveal>
+    <form action="/consult" method="post" class="card consult-form">
+      <h3>Free 15-Minute Consultation</h3>
+      <label>Name</label>
+      <input type="text" name="name" placeholder="Your name">
+      <label>Phone number</label>
+      <input type="tel" name="phone" required>
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Plan of interest</label>
+      <select name="plan">
+        <option value="undecided">Undecided yet</option>
+        <option value="beginner">Beginner Flow</option>
+        <option value="sunrise">Sunrise Sessions</option>
+        <option value="strong">Strong Flow</option>
+      </select>
+      <button class="btn" type="submit">Book My Consultation</button>
+      <p class="muted">By submitting, you agree to be contacted about your plan and habit setup.</p>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

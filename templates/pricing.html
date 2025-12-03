@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block page_styles %}
+<link rel="stylesheet" href="/static/css/pricing.css">
+{% endblock %}
+{% block content %}
+<section class="container pricing-page">
+  <h1>Choose your plan</h1>
+  {% include "partials/pricing_cards.html" %}
+  <p class="muted center" style="margin-top:16px;">Start a 7-Day Habit Kickoff — free consultation included.</p>
+  <div style="height:24px"></div>
+</section>
+{% endblock %}
