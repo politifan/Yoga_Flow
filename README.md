@@ -7,6 +7,7 @@
 
 - Скачать библиотеки 
 pip install -r requirements.txt
+# → это надо сделать только в первый раз
 
 - Запуск сервера
 uvicorn main:app --reload
