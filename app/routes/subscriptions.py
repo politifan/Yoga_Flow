@@ -22,6 +22,17 @@ def subscribe(req: Request, plan_id: str = Form(...)):
     if not uid:
         return RedirectResponse("/auth/login?next=/pricing", status_code=303)
     subs = load_json("data/subscriptions.json")
+    existing = next(
+        (
+            s
+            for s in subs
+            if s.get("user_id") == uid and s.get("status") not in ("cancelled", "expired")
+        ),
+        None,
+    )
+    if existing:
+        # Уже есть подписка — не создаем дубль и показываем уведомление
+        return RedirectResponse("/dashboard?sub=exists", status_code=303)
     subs.append(
         {
             "id": f"s_{len(subs) + 1:04d}",
