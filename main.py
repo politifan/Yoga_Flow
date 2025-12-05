@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.api.security import get_session_user_id
@@ -23,7 +23,7 @@ app.include_router(profile.router)
 
 
 @app.middleware("http")
-async def add_session_user(request, call_next):
+async def add_session_user(request:Request, call_next):
     uid = get_session_user_id(request)
     request.state.uid = uid
     request.state.user = None
