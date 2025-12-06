@@ -197,7 +197,9 @@
       avatarImg.setAttribute("hidden", "true");
     }
     if (avatarLetter) {
-      avatarLetter.toggleAttribute("hidden", Boolean(currentAvatarUrl));
+      const shouldHide = Boolean(currentAvatarUrl);
+      avatarLetter.toggleAttribute("hidden", shouldHide);
+      toggleHidden(avatarLetter, shouldHide); // страхуемся на случай, если hidden не сработает
     }
   };
 
@@ -209,7 +211,9 @@
       avatarPreviewImg.setAttribute("hidden", "true");
     }
     if (avatarPreviewLetter) {
-      avatarPreviewLetter.toggleAttribute("hidden", Boolean(url));
+      const shouldHide = Boolean(url);
+      avatarPreviewLetter.toggleAttribute("hidden", shouldHide);
+      toggleHidden(avatarPreviewLetter, shouldHide);
     }
   };
 
