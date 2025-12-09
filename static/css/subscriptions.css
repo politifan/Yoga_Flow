@@ -61,10 +61,10 @@
 
 .sub-remove{
   position:absolute;
-  top:6px;
-  right:6px;
-  width:56px;
-  height:56px;
+  top:-4px;
+  right:-4px;
+  width:64px;
+  height:64px;
   border:none;
   border-radius:50%;
   background: transparent;
@@ -73,7 +73,7 @@
   align-items:center;
   justify-content:center;
   font-weight:700;
-  font-size:22px;
+  font-size:32px;
   color:#1a1715;
   transition: transform .15s ease, color .15s ease;
 }
