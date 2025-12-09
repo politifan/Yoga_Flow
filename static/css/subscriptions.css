@@ -20,6 +20,7 @@
   padding:18px;
   border:1px solid rgba(0,0,0,.05);
   transition: transform .2s ease, box-shadow .2s ease;
+  position:relative;
 }
 .subscription-card:hover{
   transform: translateY(-2px);
@@ -57,3 +58,27 @@
   margin-bottom:16px;
 }
 .subscription-detail{ margin-top:12px; }
+
+.sub-remove{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:56px;
+  height:56px;
+  border:none;
+  border-radius:50%;
+  background: transparent;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+  color:#1a1715;
+  transition: transform .15s ease, color .15s ease;
+}
+.sub-remove:hover{
+  transform: scale(1.06);
+  color:#000;
+}
+.sub-remove:focus{ outline:2px solid var(--ink); outline-offset:3px; }

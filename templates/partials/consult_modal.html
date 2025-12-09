@@ -1,0 +1,51 @@
+{% set consult_status = request.query_params.get('consult') %}
+<div
+  class="consult-modal hidden"
+  data-consult-modal
+  data-consult-status="{{ consult_status or '' }}"
+>
+  <div class="consult-backdrop" data-consult-backdrop></div>
+  <div class="consult-card" role="dialog" aria-modal="true" aria-labelledby="consultTitle">
+    <div class="consult-head">
+      <h3 id="consultTitle">Free 15-Minute Consultation</h3>
+      <button class="consult-close" type="button" data-consult-close aria-label="Close">×</button>
+    </div>
+    <div class="flash hidden" data-consult-flash aria-live="polite"></div>
+    <form action="/consult" method="post" class="consult-form" data-consult-form>
+      <input type="hidden" name="plan" value="undecided" data-consult-plan>
+      <p class="muted small">Plan selected: <span data-consult-plan-label>Undecided yet</span></p>
+      <label>Name</label>
+      <input type="text" name="name" placeholder="Your name">
+      <label>Phone number</label>
+      <input type="tel" name="phone" required>
+      <label>Preferred time to call</label>
+      <select name="call_time" data-call-time required>
+        <option value="today-after-17">Today after 5 PM</option>
+        <option value="today-after-19" data-button-time="7:00–8:00 PM">Today after 7 PM</option>
+        <option value="tomorrow-10-13">Tomorrow 10 AM–1 PM</option>
+        <option value="tomorrow-17-20" data-button-time="5:00–8:00 PM">Tomorrow 5–8 PM</option>
+        <option value="weekend">This weekend</option>
+        <option value="anytime">Any time</option>
+      </select>
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <button class="btn" type="submit" data-consult-submit>Book my consultation</button>
+      <p class="muted small">By submitting, you agree to be contacted about your plan and habit setup.</p>
+    </form>
+    <div class="consult-inline-success hidden" data-consult-inline-success>
+      Please wait for a call at your selected time.
+    </div>
+  </div>
+</div>
+
+<div class="consult-modal hidden" data-consult-success>
+  <div class="consult-backdrop" data-consult-success-backdrop></div>
+  <div class="consult-card" role="dialog" aria-modal="true" aria-labelledby="consultSuccessTitle">
+    <div class="consult-head">
+      <h3 id="consultSuccessTitle">Request received</h3>
+      <button class="consult-close" type="button" data-consult-success-close aria-label="Close">×</button>
+    </div>
+    <p>We’ll contact you at your selected time.</p>
+    <button class="btn" type="button" data-consult-success-close>Got it</button>
+  </div>
+</div>

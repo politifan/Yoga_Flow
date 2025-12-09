@@ -56,6 +56,22 @@ def subscriptions_api(req: Request):
     return {"ok": True, "subscriptions": user_subscriptions(uid)}
 
 
+@router.delete("/subscriptions/{sub_id}")
+def delete_subscription(req: Request, sub_id: str):
+    uid = get_session_user_id(req)
+    if not uid:
+        raise HTTPException(status_code=401, detail="Требуется авторизация")
+    subs = load_json("data/subscriptions.json")
+    sub = next((s for s in subs if s.get("id") == sub_id and s.get("user_id") == uid), None)
+    if not sub:
+        raise HTTPException(status_code=404, detail="Подписка не найдена")
+    if sub.get("status") != "pending":
+        raise HTTPException(status_code=400, detail="Можно удалить только ожидающие оплаты подписки")
+    subs = [s for s in subs if s.get("id") != sub_id]
+    save_json("data/subscriptions.json", subs)
+    return {"ok": True}
+
+
 @router.get("/subscriptions/{sub_id}")
 def subscription_detail(req: Request, sub_id: str):
     uid = get_session_user_id(req)

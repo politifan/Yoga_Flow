@@ -1,3 +1,4 @@
+// Простая анимация появления секций при прокрутке
 document.addEventListener('DOMContentLoaded', () => {
   const revealables = document.querySelectorAll('[data-reveal]');
   const io = new IntersectionObserver((entries) => {

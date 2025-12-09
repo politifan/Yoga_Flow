@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block page_styles %}
 <link rel="stylesheet" href="/static/css/pricing.css">
+<link rel="stylesheet" href="/static/css/consult_modal.css">
 {% endblock %}
 {% block content %}
 <section class="container pricing-page">
@@ -9,4 +10,9 @@
   <p class="muted center" style="margin-top:16px;">Start a 7-Day Habit Kickoff — free consultation included.</p>
   <div style="height:24px"></div>
 </section>
+{% include "partials/consult_modal.html" %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/consult_modal.js" defer></script>
 {% endblock %}

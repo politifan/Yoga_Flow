@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block page_styles %}
 <link rel="stylesheet" href="/static/css/home.css">
+<link rel="stylesheet" href="/static/css/consult_modal.css">
 {% endblock %}
 {% block content %}
 
@@ -9,7 +10,7 @@
     <h1>Breathe, Move, Grow — Yoga Made Simple on Telegram</h1>
     <p class="sub">Join guided flows you can practice anywhere. Choose your path, follow along in Telegram, feel the difference in weeks.</p>
     <div class="cta-row">
-      <a href="#consult" class="btn">Start Your Free Consultation</a>
+      <button class="btn" type="button" data-consult-trigger data-plan-id="undecided">Start Your Free Consultation</button>
       <a href="/pricing" class="btn btn-ghost">See Plans</a>
     </div>
   </div>
@@ -61,34 +62,12 @@
     {% include "partials/pricing_cards.html" %}
   </div>
 
-  <div class="section-divider"></div>
-
-  {% if consult_ok %}
-    <div class="flash ok">Thanks! We’ll contact you within 24h.</div>
-  {% elif request.query_params.get('consult') == 'invalid' %}
-    <div class="flash err">Please check your email/phone and try again.</div>
-  {% endif %}
-
-  <div id="consult" class="consult-wrap" data-reveal>
-    <form action="/consult" method="post" class="card consult-form">
-      <h3>Free 15-Minute Consultation</h3>
-      <label>Name</label>
-      <input type="text" name="name" placeholder="Your name">
-      <label>Phone number</label>
-      <input type="tel" name="phone" required>
-      <label>Email</label>
-      <input type="email" name="email" required>
-      <label>Plan of interest</label>
-      <select name="plan">
-        <option value="undecided">Undecided yet</option>
-        <option value="beginner">Beginner Flow</option>
-        <option value="sunrise">Sunrise Sessions</option>
-        <option value="strong">Strong Flow</option>
-      </select>
-      <button class="btn" type="submit">Book My Consultation</button>
-      <p class="muted">By submitting, you agree to be contacted about your plan and habit setup.</p>
-    </form>
-  </div>
 </section>
 
+{% include "partials/consult_modal.html" %}
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/consult_modal.js" defer></script>
 {% endblock %}

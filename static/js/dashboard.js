@@ -1,4 +1,5 @@
 (() => {
+  // Скрипт дашборда: подписки, аватар и профиль
   const root = document.querySelector("[data-dashboard]");
   if (!root) return;
 
@@ -92,6 +93,7 @@
   };
 
   const renderSubscriptions = (items = []) => {
+    // Рендер карточек подписок и кнопок удаления
     if (!subsGrid || !subsEmpty) return;
     subsGrid.innerHTML = "";
     toggleHidden(subsEmpty, items.length > 0);
@@ -103,9 +105,12 @@
       card.tabIndex = 0;
       card.setAttribute("role", "link");
       card.dataset.detailUrl = item.detail_url || "";
+      card.dataset.subId = item.id || "";
+      const canRemove = (item.status || "pending") === "pending";
       const status = item.status || "pending";
       const statusLabel = STATUS_LABELS[status] || status;
       card.innerHTML = `
+        ${canRemove ? '<button class="sub-remove" type="button" aria-label="Удалить" data-remove-sub>×</button>' : ""}
         <div class="sub-head">
           <div>
             <p class="muted small">Тариф</p>
@@ -132,10 +137,37 @@
       card.addEventListener("keydown", (evt) => {
         if (evt.key === "Enter") card.click();
       });
+
+      const removeBtn = card.querySelector("[data-remove-sub]");
+      if (removeBtn) {
+        removeBtn.addEventListener("click", async (evt) => {
+          evt.stopPropagation();
+          const subId = card.dataset.subId;
+          if (!subId) return;
+          try {
+            const res = await fetch(`/subscriptions/${subId}`, {
+              method: "DELETE",
+              headers: { Accept: "application/json" },
+            });
+            const data = await res.json();
+            if (!res.ok || !data.ok) {
+              throw new Error(data.detail || data.error || "Не удалось удалить подписку");
+            }
+            card.remove();
+            const remaining = Array.from(subsGrid.querySelectorAll(".subscription-card"));
+            toggleHidden(subsEmpty, remaining.length > 0);
+            // refresh list
+            fetchSubscriptions();
+          } catch (err) {
+            setFlash(subsFlash, err.message, "err");
+          }
+        });
+      }
     });
   };
 
   const cacheSubscriptions = (items) => {
+    // Кешируем подписки в localStorage для быстрого первого рендера
     if (!uid || !window.localStorage) return;
     try {
       localStorage.setItem(
@@ -148,6 +180,7 @@
   };
 
   const loadCachedSubscriptions = () => {
+    // Читаем кешированные подписки при наличии
     if (!uid || !window.localStorage) return null;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -162,6 +195,7 @@
   };
 
   const fetchSubscriptions = async () => {
+    // Получаем актуальные подписки с бэкенда
     try {
       const res = await fetch("/subscriptions", { headers: { Accept: "application/json" } });
       const data = await res.json();
@@ -177,6 +211,7 @@
   };
 
   if (subsGrid) {
+    // Инициализация подписок: сначала данные из шаблона/кеша, затем обновление с сервера
     const initialSubs = safeParse(root.dataset.subs);
     if (initialSubs.length) {
       renderSubscriptions(initialSubs);
@@ -189,6 +224,7 @@
   }
 
   const syncAvatarDisplay = () => {
+    // Синхронизация виджета аватара в шапке дашборда
     if (currentAvatarUrl && avatarImg) {
       avatarImg.src = currentAvatarUrl;
       avatarImg.removeAttribute("hidden");
@@ -199,11 +235,13 @@
     if (avatarLetter) {
       const shouldHide = Boolean(currentAvatarUrl);
       avatarLetter.toggleAttribute("hidden", shouldHide);
-      toggleHidden(avatarLetter, shouldHide); // страхуемся на случай, если hidden не сработает
+      toggleHidden(avatarLetter, shouldHide);
+      avatarLetter.style.display = shouldHide ? "none" : "";
     }
   };
 
   const syncAvatarPreview = (url) => {
+    // Синхронизация предпросмотра в модалке аватара
     if (url && avatarPreviewImg) {
       avatarPreviewImg.src = url;
       avatarPreviewImg.removeAttribute("hidden");
@@ -214,10 +252,12 @@
       const shouldHide = Boolean(url);
       avatarPreviewLetter.toggleAttribute("hidden", shouldHide);
       toggleHidden(avatarPreviewLetter, shouldHide);
+      avatarPreviewLetter.style.display = shouldHide ? "none" : "";
     }
   };
 
   const resetAvatarPreview = (clearMessages = true) => {
+    // Сброс состояния выбора файла
     pendingAvatarFile = null;
     if (avatarInput) avatarInput.value = "";
     toggleHidden(avatarActions, true);
@@ -226,6 +266,7 @@
   };
 
   const openAvatarModal = () => {
+    // Открыть модалку смены аватара
     if (!avatarModalBackdrop) return;
     resetAvatarPreview();
     showAvatarPrompt();
@@ -235,6 +276,7 @@
   };
 
   const closeAvatarModal = () => {
+    // Закрыть модалку смены аватара
     if (!avatarModalBackdrop) return;
     avatarModalBackdrop.classList.add("hidden");
     document.body.style.overflow = "";
@@ -244,13 +286,34 @@
   const validateUsername = (value) => /^[A-Za-zА-Яа-яЁё0-9_-]{3,20}$/.test(value);
 
   avatarTriggers.forEach((trigger) => {
+    // Триггеры открытия модалки аватара
     trigger.addEventListener("click", () => {
       clearFlash(avatarFlash);
       openAvatarModal();
     });
   });
 
+  const handleAvatarLoad = () => {
+    // Когда картинка аватара загрузилась — обновляем состояние
+    currentAvatarUrl = avatarImg && !avatarImg.hasAttribute("hidden") ? avatarImg.src : "";
+    syncAvatarDisplay();
+    syncAvatarPreview(currentAvatarUrl);
+  };
+
+  const handleAvatarError = () => {
+    // При ошибке загрузки аватара возвращаемся к букве
+    currentAvatarUrl = "";
+    syncAvatarDisplay();
+    syncAvatarPreview(currentAvatarUrl);
+  };
+
+  if (avatarImg) {
+    avatarImg.addEventListener("load", handleAvatarLoad);
+    avatarImg.addEventListener("error", handleAvatarError);
+  }
+
   avatarInput?.addEventListener("change", () => {
+    // Валидация и предпросмотр выбранного файла
     const file = avatarInput.files?.[0];
     if (!file) return;
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -284,6 +347,7 @@
   });
 
   avatarSave?.addEventListener("click", async () => {
+    // Загрузка аватара на сервер
     if (!pendingAvatarFile) return;
     const formData = new FormData();
     formData.append("file", pendingAvatarFile);
@@ -297,18 +361,20 @@
         throw new Error(data.detail || data.error || "Не удалось загрузить аватар");
       }
       currentAvatarUrl = `${data.avatar_url}?t=${Date.now()}`;
+      pendingAvatarFile = null;
       syncAvatarDisplay();
       syncAvatarPreview(currentAvatarUrl);
       setFlash(avatarFlash, "Аватар обновлен.", "ok");
     } catch (err) {
       setFlash(avatarFlash, err.message || "Ошибка загрузки.", "err");
     } finally {
-      pendingAvatarFile = null;
       toggleHidden(avatarActions, true);
+      if (avatarInput) avatarInput.value = "";
     }
   });
 
   usernameForm?.addEventListener("submit", async (evt) => {
+    // Сохранение нового имени пользователя через API
     evt.preventDefault();
     const value = (usernameInput?.value || "").trim();
     if (!validateUsername(value)) {
@@ -339,12 +405,14 @@
   };
 
   const closeDropdown = () => {
+    // Закрываем выпадающее меню профиля
     if (!profileDropdown) return;
     profileDropdown.classList.add("hidden");
     setToggleExpanded(false);
   };
 
   const openDropdown = () => {
+    // Открываем выпадающее меню профиля
     if (!profileDropdown) return;
     profileDropdown.classList.remove("hidden");
     setToggleExpanded(true);
@@ -384,6 +452,9 @@
       closeDropdown();
     }
   });
+
+  // Initial sync to ensure letters hide when avatar exists on first load
+  handleAvatarLoad();
 
   if (subToastState && SUB_TOAST_MESSAGES[subToastState]) {
     pushToast(

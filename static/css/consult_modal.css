@@ -1,0 +1,57 @@
+.consult-modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+}
+.consult-modal.hidden{ display:none; }
+.consult-backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.55);
+}
+.consult-card{
+  position:relative;
+  width:min(520px, 92vw);
+  background:#fff;
+  color:#1a1715;
+  border-radius:28px;
+  padding:24px;
+  box-shadow: 0 30px 60px rgba(0,0,0,.25);
+  z-index:1;
+}
+.consult-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.consult-close{
+  border:none;
+  background:transparent;
+  font-size:24px;
+  cursor:pointer;
+  line-height:1;
+}
+.consult-form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.consult-form .btn{ align-self:flex-start }
+
+.consult-inline-success{
+  padding:14px 16px;
+  border-radius:16px;
+  background:#f4ede4;
+  color:#1a1715;
+  font-weight:700;
+  text-align:center;
+}
+
+@media (max-width: 600px){
+  .consult-card{ padding:20px; }
+}

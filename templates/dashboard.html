@@ -17,7 +17,7 @@
       <button class="avatar-touch" type="button" data-avatar-trigger aria-label="Изменить аватар">
         <div class="avatar-shell" aria-live="polite">
           {% if user.avatar_url %}
-            <img src="{{ user.avatar_url }}" alt="Аватар {{ user.username }}" data-avatar-img>
+            <img src="{{ user.avatar_url }}" alt="" data-avatar-img>
             <span class="avatar-letter" data-avatar-letter-text hidden>{{ user.avatar_letter }}</span>
           {% else %}
             <img src="" alt="" data-avatar-img hidden>
@@ -38,7 +38,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span data-display-name>Привет, {{ user.username }}</span>
+              <span data-display-name>Hello, {{ user.username }}</span>
             </button>
             <button
               class="profile-caret-btn"

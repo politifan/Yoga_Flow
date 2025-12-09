@@ -6,3 +6,37 @@
 }
 .pricing-page h1{ margin:0 0 8px; }
 .pricing-page .grid3{ margin-top:8px; }
+
+.plan-card{
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 64px; /* space for warning */
+}
+
+.plan-warning{
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:14px;
+  background: #1a1715;
+  color:#F7F4F0;
+  padding:10px 12px;
+  border-radius:12px;
+  font-weight:700;
+  box-shadow: 0 12px 24px rgba(0,0,0,.15);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  animation: warningSlide 2.6s ease forwards;
+}
+.plan-warning::before{
+  content:"⚠";
+  font-size:14px;
+}
+
+@keyframes warningSlide{
+  0%{ transform: translateY(0); opacity:0; }
+  10%{ transform: translateY(-10px); opacity:1; }
+  80%{ transform: translateY(-10px); opacity:1; }
+  100%{ transform: translateY(0); opacity:0; }
+}
