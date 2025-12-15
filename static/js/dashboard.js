@@ -393,7 +393,7 @@
       }
       setFlash(usernameFlash, "Имя обновлено.", "ok");
       if (nameDisplay) {
-        nameDisplay.textContent = `Привет, ${data.username}`;
+        nameDisplay.textContent = `Hello, ${data.username}`;
       }
     } catch (err) {
       setFlash(usernameFlash, err.message || "Ошибка сохранения.", "err");
