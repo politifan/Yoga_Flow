@@ -6,6 +6,7 @@
       <a href="/pricing">Pricing</a>
       {% if request.state.uid %}
         {% set email = request.state.user.email if request.state.user else "" %}
+        {% set avatar = request.state.user.avatar_url if request.state.user else None %}
         {% set letter = email.split("@")[0][:1] | upper if email else "Y" %}
         <div class="nav-profile" data-nav-profile>
           <button
@@ -16,7 +17,13 @@
             aria-expanded="false"
             aria-label="Профиль"
           >
-            <span class="avatar-circle">{{ letter }}</span>
+            {% if avatar %}
+              <span class="avatar-circle" aria-hidden="true">
+                <img src="{{ avatar }}" alt="" class="nav-avatar-img">
+              </span>
+            {% else %}
+              <span class="avatar-circle">{{ letter }}</span>
+            {% endif %}
           </button>
           <div class="nav-dropdown hidden" data-nav-dropdown>
             <a href="/dashboard">Dashboard</a>
