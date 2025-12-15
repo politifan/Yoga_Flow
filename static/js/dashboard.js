@@ -34,15 +34,15 @@
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
   const ALLOWED_TYPES = ["image/png", "image/jpeg"];
   const STATUS_LABELS = {
-    active: "Активна",
-    pending: "Ожидает оплаты",
-    cancelled: "Отменена",
-    expired: "Истекла",
+    active: "Active",
+    pending: "Pending payment",
+    cancelled: "Cancelled",
+    expired: "Expired",
   };
   const SUB_TOAST_MESSAGES = {
-    ok: "Подписка создана. Проверьте раздел «Мои подписки».",
-    cancelled: "Подписка будет отменена в конце текущего периода.",
-    exists: "У вас уже есть тариф. Перейдите в раздел «Мои подписки».",
+    ok: "Subscription created. Check “My subscriptions”.",
+    cancelled: "The subscription will be cancelled at the end of the current period.",
+    exists: "You already have a plan. Go to “My subscriptions”.",
   };
 
   let pendingAvatarFile = null;
@@ -76,7 +76,7 @@
   };
 
   const showAvatarPrompt = () => {
-    setFlash(avatarFlash, "Выберите фото", "ok");
+    setFlash(avatarFlash, "Choose a photo", "ok");
   };
 
   const pushToast = (message, type = "ok") => {
@@ -151,7 +151,7 @@
             });
             const data = await res.json();
             if (!res.ok || !data.ok) {
-              throw new Error(data.detail || data.error || "Не удалось удалить подписку");
+              throw new Error(data.detail || data.error || "Failed to delete subscription");
             }
             card.remove();
             const remaining = Array.from(subsGrid.querySelectorAll(".subscription-card"));
@@ -200,13 +200,13 @@
       const res = await fetch("/subscriptions", { headers: { Accept: "application/json" } });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Не удалось получить подписки");
+        throw new Error(data.detail || data.error || "Failed to load subscriptions");
       }
       renderSubscriptions(data.subscriptions || []);
       cacheSubscriptions(data.subscriptions || []);
       clearFlash(subsFlash);
     } catch (err) {
-      setFlash(subsFlash, err.message, "err");
+      setFlash(subsFlash, err.message || "Failed to load subscriptions", "err");
     }
   };
 
@@ -228,7 +228,7 @@
     if (currentAvatarUrl && avatarImg) {
       avatarImg.src = currentAvatarUrl;
       avatarImg.removeAttribute("hidden");
-      avatarImg.alt = "Аватар";
+      avatarImg.alt = "Avatar";
     } else if (avatarImg) {
       avatarImg.setAttribute("hidden", "true");
     }
@@ -317,12 +317,12 @@
     const file = avatarInput.files?.[0];
     if (!file) return;
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setFlash(avatarFlash, "Поддерживаются только PNG или JPG.", "err");
+      setFlash(avatarFlash, "Only PNG or JPG are supported.", "err");
       avatarInput.value = "";
       return;
     }
     if (file.size > MAX_FILE_SIZE) {
-      setFlash(avatarFlash, "Размер файла не должен превышать 5MB.", "err");
+      setFlash(avatarFlash, "File size must not exceed 5MB.", "err");
       avatarInput.value = "";
       return;
     }
@@ -358,15 +358,15 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Не удалось загрузить аватар");
+        throw new Error(data.detail || data.error || "Failed to upload avatar");
       }
       currentAvatarUrl = `${data.avatar_url}?t=${Date.now()}`;
       pendingAvatarFile = null;
       syncAvatarDisplay();
       syncAvatarPreview(currentAvatarUrl);
-      setFlash(avatarFlash, "Аватар обновлен.", "ok");
+      setFlash(avatarFlash, "Avatar updated.", "ok");
     } catch (err) {
-      setFlash(avatarFlash, err.message || "Ошибка загрузки.", "err");
+      setFlash(avatarFlash, err.message || "Upload error.", "err");
     } finally {
       toggleHidden(avatarActions, true);
       if (avatarInput) avatarInput.value = "";
@@ -378,7 +378,7 @@
     evt.preventDefault();
     const value = (usernameInput?.value || "").trim();
     if (!validateUsername(value)) {
-      setFlash(usernameFlash, "Имя должно быть 3–20 символов (буквы, цифры, _ или -).", "err");
+      setFlash(usernameFlash, "Name must be 3–20 chars (letters, digits, _ or -).", "err");
       return;
     }
     try {
@@ -389,14 +389,14 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Не удалось сохранить имя");
+        throw new Error(data.detail || data.error || "Failed to save name");
       }
-      setFlash(usernameFlash, "Имя обновлено.", "ok");
+      setFlash(usernameFlash, "Name updated.", "ok");
       if (nameDisplay) {
         nameDisplay.textContent = `Hello, ${data.username}`;
       }
     } catch (err) {
-      setFlash(usernameFlash, err.message || "Ошибка сохранения.", "err");
+      setFlash(usernameFlash, err.message || "Save error.", "err");
     }
   });
 

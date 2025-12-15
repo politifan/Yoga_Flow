@@ -233,10 +233,10 @@
         headers: { Accept: "application/json" },
         body: formData,
       });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || !data.ok) {
-      throw new Error(data.detail || data.error || "Не удалось отправить заявку");
-    }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        throw new Error(data.detail || data.error || "Failed to submit request");
+      }
     if (inlineSuccess) {
       inlineSuccess.classList.remove("hidden");
     }
