@@ -181,7 +181,7 @@
             if (current.plan_id === planId) {
               showPlanWarning(card, "You already have this plan");
             } else {
-              showPlanWarning(card, "To select a tariff, you must register");
+              showPlanWarning(card, "You can't have more than one tariff");
             }
             return;
           }
