@@ -6,8 +6,10 @@
       <a href="/pricing">Pricing</a>
       {% if request.state.uid %}
         {% set email = request.state.user.email if request.state.user else "" %}
+        {% set username = (request.state.user.username or "").strip() if request.state.user else "" %}
         {% set avatar = request.state.user.avatar_url if request.state.user else None %}
-        {% set letter = email.split("@")[0][:1] | upper if email else "Y" %}
+        {% set fallback_letter = request.state.user.avatar_letter if request.state.user else "" %}
+        {% set letter = (username[:1] or fallback_letter[:1] or email.split("@")[0][:1] or "Y") | upper %}
         <div class="nav-profile" data-nav-profile>
           <button
             type="button"

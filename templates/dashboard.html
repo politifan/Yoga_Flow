@@ -21,7 +21,9 @@
             <span class="avatar-letter" data-avatar-letter-text hidden>{{ user.avatar_letter }}</span>
           {% else %}
             <img src="" alt="" data-avatar-img hidden>
-            <span class="avatar-letter" data-avatar-letter-text>{{ user.avatar_letter }}</span>
+            {% set username = (user.username or '').strip() %}
+            {% set letter = (username[:1] or user.avatar_letter or '?') %}
+            <span class="avatar-letter" data-avatar-letter-text>{{ letter }}</span>
           {% endif %}
         </div>
       </button>
@@ -125,7 +127,9 @@
             <span data-avatar-preview-letter hidden>{{ user.avatar_letter }}</span>
           {% else %}
             <img src="" alt="" data-avatar-preview-img hidden>
-            <span data-avatar-preview-letter>{{ user.avatar_letter }}</span>
+            {% set username = (user.username or '').strip() %}
+            {% set letter = (username[:1] or user.avatar_letter or '?') %}
+            <span data-avatar-preview-letter>{{ letter }}</span>
           {% endif %}
         </div>
         <p class="muted small">PNG или JPG · до 5MB</p>
