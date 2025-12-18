@@ -178,7 +178,8 @@
     }
   };
 
-  const formatPhoneValue = (value) => {
+  let isPhoneDeleting = false;
+  const formatPhoneValue = (value, { allowOpenBracket = false } = {}) => {
     if (value == null) return "";
     const raw = String(value);
     const hasPlus = raw.trim().startsWith("+");
@@ -206,7 +207,8 @@
 
     let result = country;
     if (area) {
-      result += ` (${area})`;
+      const shouldClose = area.length === 3 && (!allowOpenBracket || block1.length > 0 || block2.length > 0 || block3.length > 0 || extraBlocks.length > 0);
+      result += ` (${area}${shouldClose ? ")" : ""}`;
     }
     if (block1) {
       result += ` ${block1}`;
@@ -248,11 +250,23 @@
 
   const bindFieldValidation = (input) => {
     if (!input) return;
+    if (input === phoneInput) {
+      input.addEventListener("keydown", (evt) => {
+        if (evt.key === "Backspace" || evt.key === "Delete") {
+          isPhoneDeleting = true;
+        } else {
+          isPhoneDeleting = false;
+        }
+      });
+    }
     input.addEventListener("blur", () => validateField(input));
     input.addEventListener("input", () => {
       if (input === phoneInput) {
-        const formatted = formatPhoneValue(input.value);
-        input.value = formatted;
+        const formatted = formatPhoneValue(input.value, { allowOpenBracket: isPhoneDeleting });
+        isPhoneDeleting = false;
+        if (formatted !== input.value) {
+          input.value = formatted;
+        }
       }
       if (input.classList.contains("consult-input-error")) {
         validateField(input);
