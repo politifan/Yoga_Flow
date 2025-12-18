@@ -178,6 +178,51 @@
     }
   };
 
+  const formatPhoneValue = (value) => {
+    if (value == null) return "";
+    const raw = String(value);
+    const hasPlus = raw.trim().startsWith("+");
+    let digits = raw.replace(/\D/g, "");
+    if (!digits) return hasPlus ? "+" : "";
+
+    let country = "";
+    if (hasPlus && digits) {
+      country = `+${digits[0]}`;
+      digits = digits.slice(1);
+    } else if (digits) {
+      country = digits[0];
+      digits = digits.slice(1);
+    }
+
+    const area = digits.slice(0, 3);
+    digits = digits.slice(3);
+    const block1 = digits.slice(0, 3);
+    digits = digits.slice(3);
+    const block2 = digits.slice(0, 2);
+    digits = digits.slice(2);
+    const block3 = digits.slice(0, 2);
+    digits = digits.slice(2);
+    const extraBlocks = digits.match(/.{1,2}/g) || [];
+
+    let result = country;
+    if (area) {
+      result += ` (${area})`;
+    }
+    if (block1) {
+      result += ` ${block1}`;
+    }
+    if (block2) {
+      result += `-${block2}`;
+    }
+    if (block3) {
+      result += `-${block3}`;
+    }
+    if (extraBlocks.length) {
+      result += `-${extraBlocks.join("-")}`;
+    }
+    return result.trim();
+  };
+
   const validateField = (input) => {
     const message = getValidationMessage(input);
     setFieldError(input, message);
@@ -205,6 +250,10 @@
     if (!input) return;
     input.addEventListener("blur", () => validateField(input));
     input.addEventListener("input", () => {
+      if (input === phoneInput) {
+        const formatted = formatPhoneValue(input.value);
+        input.value = formatted;
+      }
       if (input.classList.contains("consult-input-error")) {
         validateField(input);
       }
