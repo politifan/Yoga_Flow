@@ -5,7 +5,6 @@ __pycache__/
 
 # C extensions
 *.so
-*.json
 
 # Distribution / packaging
 .Python
@@ -21,6 +20,7 @@ parts/
 sdist/
 var/
 wheels/
+data/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
