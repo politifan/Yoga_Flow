@@ -14,6 +14,9 @@
   const planInput = modal.querySelector("[data-consult-plan]");
   const planLabel = modal.querySelector("[data-consult-plan-label]");
   const flash = modal.querySelector("[data-consult-flash]");
+  const nameInput = form?.querySelector("input[name='name']");
+  const phoneInput = form?.querySelector("input[name='phone']");
+  const emailInput = form?.querySelector("input[name='email']");
   const triggers = document.querySelectorAll("[data-plan-trigger], [data-consult-trigger]");
   const consultStatus = modal.dataset.consultStatus || "";
   const callTimeSelect = modal.querySelector("[data-call-time]");
@@ -86,10 +89,116 @@
     }
   };
 
+  const getErrorNode = (input, createIfMissing = false) => {
+    if (!input) return null;
+    const next = input.nextElementSibling;
+    const isErrorNode = next?.classList?.contains("consult-error-text");
+    if (isErrorNode) return next;
+    if (!createIfMissing) return null;
+    const note = document.createElement("div");
+    note.className = "consult-error-text small";
+    note.style.display = "none";
+    input.insertAdjacentElement("afterend", note);
+    return note;
+  };
+
+  const setFieldError = (input, message = "") => {
+    if (!input) return;
+    const hasError = Boolean(message);
+    const note = getErrorNode(input, hasError);
+    input.classList.toggle("consult-input-error", hasError);
+    if (hasError) {
+      input.setAttribute("aria-invalid", "true");
+      if (note) {
+        note.textContent = message;
+        note.style.display = "block";
+      }
+    } else {
+      input.removeAttribute("aria-invalid");
+      if (note) {
+        note.textContent = "";
+        note.style.display = "none";
+      }
+    }
+  };
+
+  const getValidationMessage = (input) => {
+    if (!input) return "";
+    const raw = (input.value || "").trim();
+    switch (input.name) {
+      case "name": {
+        const lettersOnly = raw.replace(/[^A-Za-zА-Яа-яЁё]/g, "");
+        if (lettersOnly.length < 2) {
+          return "Введите имя минимум из 2 букв";
+        }
+        return "";
+      }
+      case "email": {
+        if (!raw) return "Укажите email";
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        if (!emailPattern.test(raw)) {
+          return "Проверьте формат email";
+        }
+        return "";
+      }
+      case "phone": {
+        const digits = raw.replace(/\D/g, "");
+        if (digits.length < 10) {
+          return "Нужен номер с 10+ цифрами";
+        }
+        const phonePattern = /^[+()0-9\s-]+$/;
+        if (!phonePattern.test(raw)) {
+          return "Используйте только цифры и + ( ) -";
+        }
+        return "";
+      }
+      default:
+        return "";
+    }
+  };
+
+  const validateField = (input) => {
+    const message = getValidationMessage(input);
+    setFieldError(input, message);
+    return !message;
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    [nameInput, emailInput, phoneInput].forEach((input) => {
+      if (!validateField(input)) valid = false;
+    });
+    if (!valid) {
+      setFlash("Исправьте выделенные поля", "err");
+    }
+    return valid;
+  };
+
+  const clearValidation = () => {
+    [nameInput, emailInput, phoneInput].forEach((input) => {
+      setFieldError(input, "");
+    });
+  };
+
+  const bindFieldValidation = (input) => {
+    if (!input) return;
+    input.addEventListener("blur", () => validateField(input));
+    input.addEventListener("input", () => {
+      if (input.classList.contains("consult-input-error")) {
+        validateField(input);
+      }
+      clearFlash();
+    });
+  };
+  bindFieldValidation(nameInput);
+  bindFieldValidation(emailInput);
+  bindFieldValidation(phoneInput);
+
   const openModal = (planId = "undecided", planName = "Undecided yet") => {
     // Открываем консультацию для выбранного плана
     if (consultCompleted) return;
     clearFlash();
+    clearValidation();
     resetInlineSuccess();
     toggleHidden(form, false);
     if (planInput) planInput.value = planId;
@@ -225,6 +334,8 @@
     evt.preventDefault();
     clearFlash();
     resetInlineSuccess();
+    const isValid = validateForm();
+    if (!isValid) return;
     setSubmitting(true);
     try {
       const formData = new FormData(form);
@@ -243,6 +354,7 @@
     toggleHidden(form, true);
     form.reset();
     handleCallTimeChange();
+      clearValidation();
       // create subscription and redirect
       const subRes = await fetch("/subscribe", {
         method: "POST",

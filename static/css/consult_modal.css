@@ -4,54 +4,148 @@
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:18px;
   z-index:40;
 }
 .consult-modal.hidden{ display:none; }
 .consult-backdrop{
   position:absolute;
   inset:0;
-  background: rgba(0,0,0,.55);
+  background:
+    radial-gradient(circle at 22% 20%, rgba(217,128,46,.24), transparent 28%),
+    rgba(0,0,0,.58);
+  backdrop-filter: blur(6px);
 }
 .consult-card{
   position:relative;
-  width:min(520px, 92vw);
-  background:#fff;
+  width:min(540px, 96vw);
+  background: linear-gradient(140deg, #fff 0%, #f8f0e6 60%, #f1e2d0 100%);
   color:#1a1715;
   border-radius:28px;
-  padding:24px;
-  box-shadow: 0 30px 60px rgba(0,0,0,.25);
-  z-index:1;
+  padding:28px 26px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.25);
+  border:1px solid rgba(0,0,0,.06);
+  overflow:hidden;
 }
+.consult-card::before{
+  content:"";
+  position:absolute;
+  inset:-12px;
+  background:
+    radial-gradient(120% 120% at 12% 0%, rgba(226,170,112,.22), transparent 55%),
+    radial-gradient(60% 80% at 90% -10%, rgba(67,46,36,.12), transparent 60%);
+  opacity:.9;
+  pointer-events:none;
+}
+.consult-card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:4px;
+  background: linear-gradient(90deg, #d9802e, #2c1f16);
+  opacity:.92;
+  pointer-events:none;
+}
+.consult-card > *{ position:relative; z-index:1 }
 .consult-head{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:12px;
+  margin-bottom:10px;
+}
+.consult-head h3{
+  margin:0;
+  font-size:24px;
+  letter-spacing:0.02em;
 }
 .consult-close{
   border:none;
-  background:transparent;
-  font-size:24px;
+  background:rgba(0,0,0,.05);
+  font-size:22px;
   cursor:pointer;
   line-height:1;
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  transition: transform .12s ease, background .2s ease;
 }
+.consult-close:hover{ background:rgba(0,0,0,.12); transform: translateY(-1px) }
+.consult-close:focus{ outline:2px solid #1a1715; outline-offset:3px }
 .consult-form{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:14px;
+  margin-top:6px;
 }
-.consult-form .btn{ align-self:flex-start }
+.consult-form label{
+  margin:2px 0 4px;
+  font-weight:700;
+  color:#2b2118;
+  letter-spacing:0.01em;
+}
+.consult-form input,
+.consult-form select{
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 14px 36px rgba(0,0,0,.08);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .12s ease;
+}
+.consult-form input:focus,
+.consult-form select:focus{
+  border-color:#d9802e;
+  box-shadow: 0 12px 34px rgba(217,128,46,.24);
+  transform: translateY(-1px);
+}
+.consult-form .btn{
+  align-self:flex-start;
+  padding:12px 20px;
+  border-radius:14px;
+  box-shadow: 0 12px 26px rgba(217,128,46,.24);
+}
+
+.consult-plan-line{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:2px 0 4px;
+  padding:10px 12px;
+  border-radius:14px;
+  background: rgba(0,0,0,.04);
+  border:1px dashed rgba(0,0,0,.08);
+}
+.consult-plan-line [data-consult-plan-label]{
+  font-weight:800;
+  color:#d9802e;
+}
 
 .consult-inline-success{
   padding:14px 16px;
   border-radius:16px;
-  background:#f4ede4;
-  color:#1a1715;
+  background: linear-gradient(120deg, #e5f7e9, #f6fff4);
+  border:1px solid #a6d8b2;
+  color:#0f6b2b;
   font-weight:700;
   text-align:center;
 }
 
+.consult-input-error{
+  border-color:#c23934 !important;
+  box-shadow: 0 0 0 3px rgba(194,57,52,.16);
+}
+.consult-error-text{
+  color:#c23934;
+  margin:4px 0 0;
+  font-weight:600;
+}
+
 @media (max-width: 600px){
-  .consult-card{ padding:20px; }
+  .consult-card{ padding:22px 18px; }
+  .consult-head h3{ font-size:20px; }
 }

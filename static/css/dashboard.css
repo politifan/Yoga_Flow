@@ -116,10 +116,6 @@
   justify-content:center;
   border-left:1px solid rgba(0,0,0,.1);
 }
-.profile-caret-btn:focus{
-  outline:2px solid var(--ink);
-  outline-offset:4px;
-}
 .profile-caret{
   font-size:20px;
   opacity:.7;
