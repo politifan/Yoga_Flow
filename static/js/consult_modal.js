@@ -143,12 +143,33 @@
       }
       case "phone": {
         const digits = raw.replace(/\D/g, "");
-        if (digits.length < 10) {
-          return "Нужен номер с 10+ цифрами";
+        if (digits.length < 10 || digits.length > 15) {
+          return "Нужен номер с 10–15 цифрами";
         }
-        const phonePattern = /^[+()0-9\s-]+$/;
-        if (!phonePattern.test(raw)) {
-          return "Используйте только цифры и + ( ) -";
+        const allowedPattern = /^[+\d()\s-]+$/;
+        if (!allowedPattern.test(raw)) {
+          return "Только цифры, пробелы, + ( ) и -";
+        }
+        const plusCount = (raw.match(/\+/g) || []).length;
+        if (plusCount > 1 || (plusCount === 1 && raw.trim()[0] !== "+")) {
+          return "Знак + можно только один раз в начале";
+        }
+        const openBrackets = (raw.match(/\(/g) || []).length;
+        const closeBrackets = (raw.match(/\)/g) || []).length;
+        if (openBrackets !== closeBrackets) {
+          return "Закройте скобки в номере";
+        }
+        const firstClose = raw.indexOf(")");
+        const firstOpen = raw.indexOf("(");
+        if (firstClose !== -1 && (firstOpen === -1 || firstClose < firstOpen)) {
+          return "Скобки стоят в неправильном порядке";
+        }
+        const bracketGroups = raw.match(/\(([^)]+)\)/g) || [];
+        for (const group of bracketGroups) {
+          const insideDigits = group.replace(/\D/g, "");
+          if (insideDigits.length < 2 || insideDigits.length > 5) {
+            return "Код в скобках должен быть 2–5 цифр";
+          }
         }
         return "";
       }
