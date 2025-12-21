@@ -6,7 +6,7 @@ from app.api.users import load_users, find_user
 from uvicorn import run
 
 # Routers
-from app.routes import pages, auth, pricing, consult, subscriptions, profile
+from app.routes import pages, auth, pricing, consult, subscriptions, profile, tg_link
 
 app = FastAPI(title="Yoga Telegram Courses")
 
@@ -20,6 +20,7 @@ app.include_router(auth.router)
 app.include_router(consult.router)
 app.include_router(subscriptions.router)
 app.include_router(profile.router)
+app.include_router(tg_link.router)
 
 
 @app.middleware("http")

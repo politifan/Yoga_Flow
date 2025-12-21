@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container" style="max-width: 720px; padding: 48px 0;">
+  <header class="section-heading">
+    <p class="eyebrow">Telegram</p>
+    <h1>Связать аккаунт с ботом</h1>
+    <p class="muted">Через эту страницу вы подтверждаете владение аккаунтом и даёте боту доступ к вашим подпискам.</p>
+  </header>
+
+  {% if link %}
+    <div class="flash ok" role="status" aria-live="polite">
+      Уже привязан Telegram ID <code>{{ link.telegram_id }}</code>. Можно сгенерировать новый токен, чтобы привязать другой аккаунт.
+    </div>
+  {% endif %}
+
+  <div class="card" style="padding: 24px; margin-top: 16px;">
+    <h3>Шаг 1. Откройте бота</h3>
+    <p class="muted small">
+      Токен действует {{ token_ttl }} минут. Нажмите кнопку или введите токен вручную в боте.
+    </p>
+    {% if deep_link %}
+      <a class="btn" href="{{ deep_link }}" target="_blank" rel="noopener">
+        Открыть бота @{{ bot_username }}
+      </a>
+    {% else %}
+      <div class="flash err">Укажите USER_BOT_USERNAME в .env, чтобы сформировать ссылку на бота.</div>
+    {% endif %}
+    <div class="token-box" style="margin-top: 12px; padding: 12px; border: 1px dashed var(--stroke); border-radius: 12px;">
+      <div class="muted small">Токен для связывания</div>
+      <div style="font-family: var(--mono, monospace); font-size: 16px;">{{ token }}</div>
+      <div class="muted small">Истекает: {{ expires_at }}</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding: 24px; margin-top: 16px;">
+    <h3>Шаг 2. Подтвердите в боте</h3>
+    <ol class="muted small" style="padding-left: 20px; margin: 8px 0 0;">
+      <li>Откройте бота и нажмите Start.</li>
+      <li>Если ссылка не сработала, отправьте команду <code>/link {{ token }}</code>.</li>
+      <li>Бот привяжет ваш Telegram к аккаунту {{ user.email }}.</li>
+    </ol>
+  </div>
+</section>
+{% endblock %}
