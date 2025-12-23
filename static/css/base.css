@@ -145,6 +145,8 @@ main{ min-height: 70vh; position:relative; z-index:1; }
 }
 
 .card{
+  display: flex;
+  flex-direction: column;
   position:relative;
   background: linear-gradient(140deg, #ffffff 0%, #fff3e4 60%, #f5dfc7 100%);
   color:var(--ink);
@@ -153,6 +155,7 @@ main{ min-height: 70vh; position:relative; z-index:1; }
   box-shadow: 0 18px 40px rgba(217,128,46,.14);
   border:1px solid rgba(217,128,46,.16);
   overflow:hidden;
+  width: 370px;
 }
 .card::after{
   content:"";
