@@ -34,15 +34,15 @@
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
   const ALLOWED_TYPES = ["image/png", "image/jpeg"];
   const STATUS_LABELS = {
-    active: "Active",
-    pending: "Pending payment",
-    cancelled: "Cancelled",
-    expired: "Expired",
+    active: "Активна",
+    pending: "Ожидает оплаты",
+    cancelled: "Отменена",
+    expired: "Истекла",
   };
   const SUB_TOAST_MESSAGES = {
-    ok: "Subscription created. Check “My subscriptions”.",
-    cancelled: "The subscription will be cancelled at the end of the current period.",
-    exists: "You already have a plan. Go to “My subscriptions”.",
+    ok: "Подписка создана. Проверьте раздел «Мои подписки».",
+    cancelled: "Подписка будет отменена в конце текущего периода.",
+    exists: "У вас уже есть тариф. Перейдите в раздел «Мои подписки».",
   };
 
   let pendingAvatarFile = null;
@@ -52,7 +52,7 @@
     try {
       return value ? JSON.parse(value) : [];
     } catch (err) {
-      console.warn("Failed to parse dataset subscriptions", err);
+      console.warn("Не удалось распарсить подписки из dataset", err);
       return [];
     }
   };
@@ -76,7 +76,7 @@
   };
 
   const showAvatarPrompt = () => {
-    setFlash(avatarFlash, "Choose a photo", "ok");
+    setFlash(avatarFlash, "Выберите фото", "ok");
   };
 
   const pushToast = (message, type = "ok") => {
@@ -151,7 +151,7 @@
             });
             const data = await res.json();
             if (!res.ok || !data.ok) {
-              throw new Error(data.detail || data.error || "Failed to delete subscription");
+              throw new Error(data.detail || data.error || "Не удалось удалить подписку");
             }
             card.remove();
             const remaining = Array.from(subsGrid.querySelectorAll(".subscription-card"));
@@ -200,13 +200,13 @@
       const res = await fetch("/subscriptions", { headers: { Accept: "application/json" } });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Failed to load subscriptions");
+        throw new Error(data.detail || data.error || "Не удалось получить подписки");
       }
       renderSubscriptions(data.subscriptions || []);
       cacheSubscriptions(data.subscriptions || []);
       clearFlash(subsFlash);
     } catch (err) {
-      setFlash(subsFlash, err.message || "Failed to load subscriptions", "err");
+      setFlash(subsFlash, err.message || "Не удалось получить подписки", "err");
     }
   };
 
@@ -228,7 +228,7 @@
     if (currentAvatarUrl && avatarImg) {
       avatarImg.src = currentAvatarUrl;
       avatarImg.removeAttribute("hidden");
-      avatarImg.alt = "Avatar";
+      avatarImg.alt = "Аватар";
     } else if (avatarImg) {
       avatarImg.setAttribute("hidden", "true");
     }
@@ -317,12 +317,12 @@
     const file = avatarInput.files?.[0];
     if (!file) return;
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setFlash(avatarFlash, "Only PNG or JPG are supported.", "err");
+      setFlash(avatarFlash, "Поддерживаются только PNG или JPG.", "err");
       avatarInput.value = "";
       return;
     }
     if (file.size > MAX_FILE_SIZE) {
-      setFlash(avatarFlash, "File size must not exceed 5MB.", "err");
+      setFlash(avatarFlash, "Размер файла не должен превышать 5MB.", "err");
       avatarInput.value = "";
       return;
     }
@@ -358,15 +358,15 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Failed to upload avatar");
+        throw new Error(data.detail || data.error || "Не удалось загрузить аватар");
       }
       currentAvatarUrl = `${data.avatar_url}?t=${Date.now()}`;
       pendingAvatarFile = null;
       syncAvatarDisplay();
       syncAvatarPreview(currentAvatarUrl);
-      setFlash(avatarFlash, "Avatar updated.", "ok");
+      setFlash(avatarFlash, "Аватар обновлен.", "ok");
     } catch (err) {
-      setFlash(avatarFlash, err.message || "Upload error.", "err");
+      setFlash(avatarFlash, err.message || "Ошибка загрузки.", "err");
     } finally {
       toggleHidden(avatarActions, true);
       if (avatarInput) avatarInput.value = "";
@@ -378,7 +378,7 @@
     evt.preventDefault();
     const value = (usernameInput?.value || "").trim();
     if (!validateUsername(value)) {
-      setFlash(usernameFlash, "Name must be 3–20 chars (letters, digits, _ or -).", "err");
+      setFlash(usernameFlash, "Имя должно быть 3–20 символов (буквы, цифры, _ или -).", "err");
       return;
     }
     try {
@@ -389,14 +389,14 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Failed to save name");
+        throw new Error(data.detail || data.error || "Не удалось сохранить имя");
       }
-      setFlash(usernameFlash, "Name updated.", "ok");
+      setFlash(usernameFlash, "Имя обновлено.", "ok");
       if (nameDisplay) {
-        nameDisplay.textContent = `Hello, ${data.username}`;
+        nameDisplay.textContent = `Привет, ${data.username}`;
       }
     } catch (err) {
-      setFlash(usernameFlash, err.message || "Save error.", "err");
+      setFlash(usernameFlash, err.message || "Ошибка сохранения.", "err");
     }
   });
 

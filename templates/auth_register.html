@@ -4,18 +4,18 @@
 {% endblock %}
 {% block content %}
 <section class="container auth">
-  <h1>Create account</h1>
+  <h1>Регистрация</h1>
   {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
-  {% if request.query_params.get('err') == 'exists' %}<div class="flash err">Email already registered</div>{% endif %}
+  {% if request.query_params.get('err') == 'exists' %}<div class="flash err">Email уже зарегистрирован</div>{% endif %}
   <form action="/auth/register" method="post" class="card" style="max-width:420px;">
     <label>Email</label>
     <input name="email" type="email" required>
-    <label>Password</label>
+    <label>Пароль</label>
     <input name="password" type="password" required>
-    <label>Phone (optional)</label>
+    <label>Телефон (необязательно)</label>
     <input name="phone" type="tel">
-    <button class="btn" type="submit">Create account</button>
-    <p class="muted">Have an account? <a href="/auth/login">Log in</a></p>
+    <button class="btn" type="submit">Создать аккаунт</button>
+    <p class="muted">Уже есть аккаунт? <a href="/auth/login">Войти</a></p>
   </form>
 </section>
 {% endblock %}
