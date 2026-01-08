@@ -20,7 +20,12 @@ parts/
 sdist/
 var/
 wheels/
-data/
+data/users.json
+data/tg_tokens.json
+data/tg_links.json
+data/subscriptions.json
+data/payment_requests.json
+data/consultations.json
 share/python-wheels/
 *.egg-info/
 .installed.cfg
