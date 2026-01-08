@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% block page_styles %}
 <link rel="stylesheet" href="/static/css/home.css">
+<link rel="stylesheet" href="/static/css/plans.css">
 <link rel="stylesheet" href="/static/css/consult_modal.css">
 {% endblock %}
 {% block content %}
 
 <section class="hero container">
   <div class="hero-text">
-    <h1>Breathe, Move, Grow — Yoga Made Simple on Telegram</h1>
-    <p class="sub">Join guided flows you can practice anywhere. Choose your path, follow along in Telegram, feel the difference in weeks.</p>
+    <h1>Дыши, двигайся, развивайся — йога в Telegram</h1>
+    <p class="sub">Присоединяйтесь к практикам, которые можно делать где угодно. Выберите тариф, занимайтесь по шагам в Telegram и почувствуйте результат уже через несколько недель.</p>
     <div class="cta-row">
-      <button class="btn" type="button" data-consult-trigger data-plan-id="undecided">Start Your Free Consultation</button>
-      <a href="/pricing" class="btn btn-ghost">See Plans</a>
+      <button class="btn" type="button" data-consult-trigger data-plan-id="undecided">Записаться на бесплатную консультацию</button>
+      <a href="/pricing" class="btn btn-ghost">Посмотреть тарифы</a>
     </div>
   </div>
   <div class="hero-blob">
@@ -22,19 +23,19 @@
 <div class="section-divider"></div>
 
 <section class="how container">
-  <h2>How it works</h2>
+  <h2>Как это работает</h2>
   <div class="grid3">
     <div class="card" data-reveal>
-      <h3>Pick Your Path</h3>
-      <p>Choose a plan that matches your level and schedule — or start undecided and we’ll guide you.</p>
+      <h3>Выберите направление</h3>
+      <p>Подберите тариф по уровню и графику — или оставьте “не определился”, и мы поможем.</p>
     </div>
     <div class="card" data-reveal>
-      <h3>Practice in Telegram</h3>
-      <p>Receive bite-sized videos, voice cues, and reminders right inside Telegram. No extra apps.</p>
+      <h3>Занимайтесь в Telegram</h3>
+      <p>Получайте короткие видео, подсказки и напоминания прямо в Telegram. Без лишних приложений.</p>
     </div>
     <div class="card" data-reveal>
-      <h3>Build Your Habit</h3>
-      <p>Track progress weekly, unlock new flows, and feel stronger, calmer, and more mobile.</p>
+      <h3>Закрепите привычку</h3>
+      <p>Отслеживайте прогресс, открывайте новые практики и чувствуйте больше силы, спокойствия и подвижности.</p>
     </div>
   </div>
 </section>
@@ -42,12 +43,12 @@
 <div class="section-divider"></div>
 
 <section class="benefits container">
-  <h2>Why it works</h2>
+  <h2>Почему это работает</h2>
   <ul class="benefits-list">
-    <li>Short, effective sessions (10–30 min)</li>
-    <li>Certified instructors, safe progressions</li>
-    <li>Weekly check-ins & habit tips</li>
-    <li>Works on any device with Telegram</li>
+    <li>Короткие эффективные занятия (10–30 минут)</li>
+    <li>Безопасная нагрузка и понятный прогресс</li>
+    <li>Еженедельные чек‑ины и советы по привычкам</li>
+    <li>Работает на любом устройстве с Telegram</li>
   </ul>
 </section>
 
@@ -56,8 +57,8 @@
 <section class="container plans-hub">
   <div class="subscriptions" data-reveal>
     <div class="section-heading">
-      <h2>Our subscriptions</h2>
-      <p class="muted">Pick a Telegram-based flow that fits your energy and schedule.</p>
+      <h2>Наши тарифы</h2>
+      <p class="muted">Выберите формат занятий в Telegram под ваш график и цели.</p>
     </div>
     {% include "partials/pricing_cards.html" %}
   </div>

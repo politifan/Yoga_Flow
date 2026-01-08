@@ -21,10 +21,10 @@
   const consultStatus = modal.dataset.consultStatus || "";
   const callTimeSelect = modal.querySelector("[data-call-time]");
   const submitButton = modal.querySelector("[data-consult-submit]");
-  const defaultSubmitText = submitButton?.textContent?.trim() || "Book my consultation";
+  const defaultSubmitText = submitButton?.textContent?.trim() || "Записаться на консультацию";
   const inlineSuccess = modal.querySelector("[data-consult-inline-success]");
   let selectedPlanId = "undecided";
-  let selectedPlanName = "Undecided yet";
+  let selectedPlanName = "Пока не определился";
   let subsCache = null;
   const savedDone = (() => {
     try {
@@ -74,7 +74,7 @@
     const selected = callTimeSelect.selectedOptions?.[0];
     const buttonTime = selected?.dataset.buttonTime;
     if (buttonTime) {
-      submitButton.textContent = `Book for ${buttonTime}`;
+      submitButton.textContent = `Записаться на ${buttonTime}`;
     } else {
       resetSubmitText();
     }
@@ -83,7 +83,7 @@
     if (!submitButton) return;
     submitButton.disabled = value;
     if (value) {
-      submitButton.textContent = "Sending...";
+      submitButton.textContent = "Отправляем...";
     } else {
       handleCallTimeChange();
     }
@@ -278,7 +278,7 @@
   bindFieldValidation(emailInput);
   bindFieldValidation(phoneInput);
 
-  const openModal = (planId = "undecided", planName = "Undecided yet") => {
+  const openModal = (planId = "undecided", planName = "Пока не определился") => {
     // Открываем консультацию для выбранного плана
     if (consultCompleted) return;
     clearFlash();
@@ -333,7 +333,7 @@
       const res = await fetch("/subscriptions", { headers: { Accept: "application/json" } });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Failed to load subscriptions");
+        throw new Error(data.detail || data.error || "Не удалось получить подписки");
       }
       subsCache = data.subscriptions || [];
       return subsCache;
@@ -362,7 +362,7 @@
     btn.addEventListener("click", async (evt) => {
       evt.preventDefault();
       const planId = btn.dataset.planId || "undecided";
-      const planName = btn.dataset.planName || btn.dataset.planLabel || "Undecided yet";
+      const planName = btn.dataset.planName || btn.dataset.planLabel || "Пока не определился";
       const card = btn.closest(".plan-card");
 
       // Logged-in users go straight to subscription flow
@@ -372,9 +372,9 @@
           const current = subs.find((s) => (s.status || "pending") !== "cancelled" && (s.status || "") !== "expired");
           if (current) {
             if (current.plan_id === planId) {
-              showPlanWarning(card, "You already have this plan");
+              showPlanWarning(card, "У вас уже есть этот тариф");
             } else {
-              showPlanWarning(card, "You can't have more than one tariff");
+            showPlanWarning(card, "Нельзя иметь более одного тарифа");
             }
             return;
           }
@@ -430,7 +430,7 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
-        throw new Error(data.detail || data.error || "Failed to submit request");
+        throw new Error(data.detail || data.error || "Не удалось отправить заявку");
       }
     if (inlineSuccess) {
       inlineSuccess.classList.remove("hidden");
@@ -446,13 +446,13 @@
         body: new URLSearchParams({ plan_id: selectedPlanId || "undecided" }),
       });
       if (!subRes.ok) {
-        throw new Error("Failed to create subscription");
+        throw new Error("Не удалось создать подписку");
       }
       setTimeout(() => {
         window.location.href = "/dashboard?sub=ok";
       }, 1000);
     } catch (err) {
-      setFlash(err.message || "Failed to submit. Please try again.", "err");
+      setFlash(err.message || "Не удалось отправить. Попробуйте еще раз.", "err");
     } finally {
       setSubmitting(false);
     }

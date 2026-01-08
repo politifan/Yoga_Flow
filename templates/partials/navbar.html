@@ -2,8 +2,8 @@
   <div class="container nav-inner">
     <a class="logo" href="/">YogaFlow</a>
     <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/pricing">Pricing</a>
+      <a href="/">Главная</a>
+      <a href="/pricing">Тарифы</a>
       {% if request.state.uid %}
         {% set user_obj = request.state.user or {} %}
         {% set email = user_obj.get("email", "") %}
@@ -29,16 +29,16 @@
             {% endif %}
           </button>
           <div class="nav-dropdown hidden" data-nav-dropdown>
-            <a href="/dashboard">Dashboard</a>
-            <a href="https://t.me/slalker_dmitriy_bot">Link Telegram</a>
+            <a href="/dashboard">Профиль</a>
+            <a href="https://t.me/slalker_dmitriy_bot">Связать Telegram</a>
             <form action="/auth/logout" method="post">
-              <button type="submit">Logout</button>
+              <button type="submit">Выйти</button>
             </form>
           </div>
         </div>
       {% else %}
-        <a href="/auth/login">Login</a>
-        <a href="/auth/register">Sign up</a>
+        <a href="/auth/login">Войти</a>
+        <a href="/auth/register">Регистрация</a>
       {% endif %}
     </nav>
   </div>

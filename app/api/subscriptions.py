@@ -26,13 +26,13 @@ def _format_date(dt_str: Optional[str]) -> Optional[str]:
 
 def serialize_subscription(sub: Dict[str, Any], plans: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     plan = plans.get(sub.get("plan_id")) or {}
-    price = plan.get("price_usd")
+    price = plan.get("price_rub") or plan.get("price_usd")
     return {
         "id": sub.get("id"),
         "plan_id": sub.get("plan_id"),
         "plan_name": plan.get("name") or sub.get("plan_id"),
-        "price_usd": price,
-        "price_label": f"${price}/мес" if price else None,
+        "price_rub": price,
+        "price_label": f"{price} ₽/мес" if price else None,
         "status": sub.get("status", "pending"),
         "ends_at": sub.get("ends_at"),
         "ends_at_display": _format_date(sub.get("ends_at")),

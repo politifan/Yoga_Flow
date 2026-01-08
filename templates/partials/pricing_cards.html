@@ -3,7 +3,7 @@
   <div class="card plan-card">
     <h3>{{ p.name }}</h3>
     <p class="tagline">{{ p.tagline }}</p>
-    <p class="price">${{ p.price_usd }} <span>/ month</span></p>
+    <p class="price">{{ (p.price_rub if p.price_rub is defined else (p.price_usd * 100)) }} ₽ <span>/ мес</span></p>
     <ul class="features">
       {% for f in p.features %}
         <li>{{ f }}</li>
@@ -17,7 +17,7 @@
       data-plan-name="{{ p.name }}"
       style="height: 50px;"
     >
-      Choose Plan
+      Выбрать тариф
     </button>
   </div>
   {% endfor %}
