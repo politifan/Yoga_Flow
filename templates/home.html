@@ -6,12 +6,13 @@
 {% endblock %}
 {% block content %}
 
-<section class="hero container">
+<!-- ДАЖЕ НЕ СМЕЙ СУКА УБИРАТЬ МОЙ STYLE-->
+<section class="hero container" style="margin: 30px auto;">
   <div class="hero-text">
     <h1>Дыши, двигайся, развивайся — йога в Telegram</h1>
     <p class="sub">Присоединяйтесь к практикам, которые можно делать где угодно. Выберите тариф, занимайтесь по шагам в Telegram и почувствуйте результат уже через несколько недель.</p>
     <div class="cta-row">
-      <button class="btn" type="button" data-consult-trigger data-plan-id="undecided">Записаться на бесплатную консультацию</button>
+      <button class="btn" type="button" data-consult-trigger data-plan-id="undecided">Бесплатная консультация</button>
       <a href="/pricing" class="btn btn-ghost">Посмотреть тарифы</a>
     </div>
   </div>
@@ -22,7 +23,8 @@
 
 <div class="section-divider"></div>
 
-<section class="how container">
+<!-- И ЭТОТ STYLE ТОЖЕ!-->
+<section class="how container" style="margin: 18px auto;">
   <h2>Как это работает</h2>
   <div class="grid3">
     <div class="card" data-reveal>
@@ -70,5 +72,6 @@
 {% endblock %}
 
 {% block scripts %}
+  <script src="/static/js/home_grid_span.js" defer></script>
   <script src="/static/js/consult_modal.js" defer></script>
 {% endblock %}

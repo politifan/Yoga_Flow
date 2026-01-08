@@ -5,6 +5,7 @@
   gap: 26px;
   align-items:center;
   padding: 44px;
+  min-width: var(--grid3-span, 1142px);
   min-height: 62vh;
   background: linear-gradient(140deg, #fff7ef 0%, #ffe7cf 60%, #f6d4ae 100%);
   border-radius: 34px;
@@ -138,5 +139,5 @@
 }
 
 @media (max-width: 900px){
-  .hero{ grid-template-columns: 1fr; padding: 34px 26px; }
+  .hero{ grid-template-columns: 1fr; padding: 34px 26px; min-width: 0; }
 }

@@ -80,7 +80,7 @@
 .consult-form{
   display:flex;
   flex-direction:column;
-  gap:14px;
+  gap:6px;
   margin-top:6px;
 }
 .consult-form label{

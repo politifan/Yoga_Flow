@@ -7,9 +7,10 @@
   <div class="consult-backdrop" data-consult-backdrop></div>
   <div class="consult-card" role="dialog" aria-modal="true" aria-labelledby="consultTitle">
     <div class="consult-head">
-      <h3 id="consultTitle">Бесплатная консультация (15 минут)</h3>
+      <h3 id="consultTitle">Бесплатная консультация</h3>
       <button class="consult-close" type="button" data-consult-close aria-label="Закрыть">×</button>
     </div>
+    <h3 id="consultTitle" style="margin: 0;">(займёт всего 5 минут)</h3>
     <div class="flash hidden" data-consult-flash aria-live="polite"></div>
     <form action="/consult" method="post" class="consult-form" data-consult-form>
       <input type="hidden" name="plan" value="undecided" data-consult-plan>
@@ -29,7 +30,7 @@
       </select>
       <label>Email</label>
       <input type="email" name="email" required placeholder="name@example.com">
-      <button class="btn" type="submit" data-consult-submit>Записаться на консультацию</button>
+      <button class="btn" type="submit" data-consult-submit style="margin-top: 40px;">Записаться на консультацию</button>
       <p class="muted small">Нажимая кнопку, вы соглашаетесь на связь по указанным контактам.</p>
     </form>
     <div class="consult-inline-success hidden" data-consult-inline-success>
@@ -37,7 +38,6 @@
     </div>
   </div>
 </div>
-
 <div class="consult-modal hidden" data-consult-success>
   <div class="consult-backdrop" data-consult-success-backdrop></div>
   <div class="consult-card" role="dialog" aria-modal="true" aria-labelledby="consultSuccessTitle">
